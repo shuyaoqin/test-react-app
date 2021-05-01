@@ -1,5 +1,6 @@
 import React from 'react';
 import Swiper from './components/swiper';
+import Toast from './components/toast';
 import './assets/css/app.css';
 
 class App extends React.Component {
@@ -8,6 +9,8 @@ class App extends React.Component {
     this.state = {
       images:[],
       images2: [],
+      username: "",
+      password: "",
     };
   }
   componentDidMount() {
@@ -25,13 +28,36 @@ class App extends React.Component {
       this.setState({images: images, images2})
     }, 400)
   }
+  submitLogin() {
+    if(this.state.username.match(/^\s*$/)) {
+      Toast({
+        txt: '请输入用户名',
+        duration: 3000,
+        onClose: () => {
+          console.log("toast已关闭")
+        }
+      });
+      return;
+    }
+    if(this.state.password.match(/^\s*$/)) {
+      Toast({
+        txt: '请输入密码',
+      });
+      return;
+    }
+  }
   render() {
     return (
       <div className="App">
         <div className="banner">
           <Swiper data={this.state.images}></Swiper>
+        </div>
+        <div className="banner">
           <Swiper data={this.state.images2}></Swiper>
         </div>
+        <input type="text" placeholder="用户名" value={this.state.username} onChange={(e) => {this.setState({username:e.target.value})}} /><br />
+        <input type="password" placeholder="密码" value={this.state.password} onChange={(e) => {this.setState({password: e.target.value})}} /><br />
+        <button type="button" onClick={this.submitLogin.bind(this)}>登录</button>
       </div>
     )
   }
