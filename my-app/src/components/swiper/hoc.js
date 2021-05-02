@@ -1,86 +1,84 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import Hoc from '../hoc/extend';
 export default function hoc(WithComponent) {
-    return class HocComponents extends React.Component {
-        //检查数据类型
-        static propTypes = {
-            data: PropTypes.array.isRequired
-        };
-        //默认值
-        // static defaultProps = {
-        //     data: []
-        // };
-        
-        constructor() {
-            super();
-            this.state = {}
-            this.aData = [];
-            this.init = true;
-            this.index = 0;
+    function HocComponent(props) {
+        let [data, setData] = useState([]);
+        let [isInit, setIsInit] = useState(true);
+        let [iIndex, setIndex] = useState(0);
+        // 创建一个表示，通用的容器
+        let timer = useRef(null);
+        // 点击切换图片
+        function changeImg(index) {
+            setIndex(index);
+            if(data && data.length > 0) {
+                for(let i=0; i< data.length;i++) {
+                    if(data[i].active) {
+                        data[i].active = false;
+                        break;
+                    }
+                }
+            }
+            data[index].active = true;
+            setData(data);
         }
-        componentDidMount() {
-            this.autoPlay();
-        }
-
         // 自动播放
-        autoPlay() {
-            this.timer = setInterval(() => {
-                if(this.aData && this.aData.length>0) {
-                    this.init = false;
-                    for(let i=0;i<this.aData.length;i++) {
-                        if(this.aData[i].active) {
-                            this.aData[i].active = false;
+        const autoPlay = useCallback(() => {
+            clearInterval(timer.current);
+            timer.current = setInterval(() => {
+                let tempIndex = iIndex;
+                if(data && data.length>0) {
+                    for(let i=0;i<data.length;i++) {
+                        if(data[i].active) {
+                            data[i].active = false;
                             break;
                         }
                     }
-                    if(this.index >= this.aData.length - 1) {
-                        this.index = 0;
+                    if(tempIndex >= data.length - 1) {
+                        tempIndex = 0;
                     } else {
-                        this.index++;
+                        tempIndex++;
                     }
-                    this.aData[this.index].active = true;
-                    this.setState({});
+                    data[tempIndex].active = true;
+                    setIndex(tempIndex);
+                    setData(data);
                 }
             }, 3000);
-        }
 
-        componentWillUnmount() {
-            // 页面离开的时候清除定时器，解决性能问题
-            clearInterval(this.timer);
+        },[data, iIndex])
+        function stop() {
+            clearInterval(timer.current);
         }
-
-        // 点击切换图片
-        changeImg(index) {
-            this.init = false;
-            this.index = index;
-            if(this.aData && this.aData.length > 0) {
-                for(let i=0; i< this.aData.length;i++) {
-                    this.aData[i].active = false;
-                }
-            }
-            this.aData[index].active = true;
-            this.setState({});
-        }
-
-        // 停止自动播放
-        stop() {
-            clearInterval(this.timer);
-        }
-    
-        render() {
-            this.aData = this.props.data;
-            if(this.aData && this.aData.length > 0 && this.init) {
-                for(let i=0;i<this.aData.length;i++) {
-                    if(i===0) {
-                        this.aData[i].active = true;
+        useEffect(() => {
+            if(props.data && props.data.length > 0 && isInit) {
+                setIsInit(false);
+                for(let i=0; i<props.data.length; i++) {
+                    if(i===0){
+                        props.data[i].active = true;
                     } else {
-                        this.aData[i].active = false;
+                        props.data[i].active = false;
                     }
                 }
+                setData(props.data);
             }
-            return(
-                <WithComponent {...this.props} changeImg={this.changeImg.bind(this)} stop={this.stop.bind(this)} autoPlay={this.autoPlay.bind(this)}></WithComponent>
-            )
+            autoPlay();
+            // 只有页面离开时执行
+            return () => {
+                clearInterval(timer.current);
+            }
+        }, [props.data,isInit,autoPlay])
+        let newProps = {
+            changeImg,
+            stop,
+            autoPlay,
+            data
         }
+        return(
+            <WithComponent {...props} {...newProps}></WithComponent>
+        )
     }
+    HocComponent.propTypes={
+        data:PropTypes.array.isRequired,
+    };
+    return HocComponent;
 }
