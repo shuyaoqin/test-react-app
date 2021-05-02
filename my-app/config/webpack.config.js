@@ -420,6 +420,7 @@ module.exports = function (webpackEnv) {
                       },
                     },
                   ],
+                  'react-html-attrs',//解决clasName的问题
                   isEnvDevelopment &&
                     shouldUseReactRefresh &&
                     require.resolve('react-refresh/babel'),
@@ -492,9 +493,14 @@ module.exports = function (webpackEnv) {
                   ? shouldUseSourceMap
                   : isEnvDevelopment,
                 modules: {
-                  getLocalIdent: getCSSModuleLocalIdent,
+                  // getLocalIdent: getCSSModuleLocalIdent,
+                  localIdentName: '[local]_[hash:base64:6]', //2、自动生成模块化后的名称
                 },
               }),
+              exclude:[//3、排除这两个文件夹下面的css文件
+                path.join(__dirname, '..', 'node_modules'),
+                path.join(__dirname, '..','src/assets/css/common')
+              ],
             },
             // Opt-in support for SASS (using .scss or .sass extensions).
             // By default we support SASS Modules with the

@@ -2,6 +2,7 @@ import React from 'react';
 import Swiper from './components/swiper';
 import Toast from './components/toast';
 import Confirm from './components/confirm';
+import Header from './components/header';
 import './assets/css/app.css';
 
 class App extends React.Component {
@@ -72,11 +73,12 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className="App">
+      <div className="app">
+        <Header isShow={true}></Header>
         <div className="banner">
           <Swiper data={this.state.images}></Swiper>
         </div>
-        <div className="banner">
+        <div class="banner">
           <Swiper data={this.state.images2}></Swiper>
         </div>
         <input type="text" placeholder="用户名" value={this.state.username} onChange={(e) => {this.setState({username:e.target.value})}} /><br />
