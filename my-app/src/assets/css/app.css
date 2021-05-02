@@ -2,3 +2,4 @@
 .box .active{background-color: #ff0000;}
 .btn-bg{background-color: #0000ff !important;}
 .banner{width: 800px;height: 350px;}
+.app {width: 100vw;height: 100vh;background-color: #ff00ff;}
