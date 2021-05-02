@@ -4,7 +4,7 @@ import './style.css';
 export default Hoc((props) => {
     let aData = props.data;
     return(
-        <div className="my-swiper-main" onMouseOver={props.stop.bind(this)} onMouseOut={props.autoPlay.bind(this)}>
+        <div className="my-swiper-main" onMouseOver={props.stop} onMouseOut={props.autoPlay}>
             {
                 (aData && aData.length>0) && aData.map((item,index) => {
                     return (
@@ -17,7 +17,7 @@ export default Hoc((props) => {
             <div className="pagination">
                 {
                     (aData && aData.length>0)&&aData.map((item,index) => {
-                        return <div className={item.active ? "dot active" : "dot"} key={index} onClick={props.changeImg.bind(this, index)}></div>
+                        return <div className={item.active ? "dot active" : "dot"} key={index} onClick={() => {props.changeImg(index)}}></div>
                     })
                 }
             </div>
