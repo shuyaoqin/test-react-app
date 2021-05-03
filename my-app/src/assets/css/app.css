@@ -1,5 +1,7 @@
-.box{width: 100px;height: 100px;background-color: #0000ff;position: absolute;z-index: 1;left: 0;top: 0;}
-.box .active{background-color: #ff0000;}
+
 .btn-bg{background-color: #0000ff !important;}
 .banner{width: 800px;height: 350px;}
-.app {width: 100vw;height: 100vh;background-color: #ff00ff;}
+.app {width: 100vw;height: 100vh;}
+.box{width: 100px; height: 100px; background: #ff00ff;position: absolute;z-index: 1;left: 0px;top: 50px;}
+
+.name{width: 300px;height: 40px;background-color: #0000FF;color: #ffffff;font-size: 16px;line-height: 40px;margin-bottom: 50px;}
