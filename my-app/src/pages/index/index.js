@@ -6,6 +6,7 @@ class Index extends React.Component {
             <div>
                 <ul>
                     <li><Link to="/news">新闻首页</Link></li>
+                    <li><Link to="/goods">商品页面</Link></li>
                 </ul>
             </div>
         )
