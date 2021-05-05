@@ -1,13 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './assets/css/common/public.css';
-import App from './App';
+import RouterComponent from './router';
 import * as serviceWorker from './serviceWorker';
 
+function App() {
+  return(
+    <React.Fragment>
+
+    </React.Fragment>
+  )
+}
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <RouterComponent />,
   document.getElementById('root')
 );
 
