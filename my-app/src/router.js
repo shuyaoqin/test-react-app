@@ -10,10 +10,13 @@ Redirect:路由重定向
 import React,{lazy,Suspense} from 'react';
 import {HashRouter as Router,Route,Switch} from 'react-router-dom';
 import "./assets/css/common/animate.css";
+import {AuthRoute} from './pages/routers/private';
 const IndexPage=lazy(()=>import('./pages/index'));
 const NewsPage=lazy(()=>import('./pages/news'));
 const NewsDetailsPage=lazy(()=>import('./pages/news/details'));
 const GoodsPage=lazy(()=>import('./pages/goods'));
+const LoginPage=lazy(()=>import('./pages/login'));
+const UserPage=lazy(()=>import('./pages/users'));
 class RouterComponent extends React.Component {
   constructor() {
     super();
@@ -36,6 +39,8 @@ class RouterComponent extends React.Component {
                     {/* <Route path="/news/details/:id/:title" component={NewsDetailsPage}></Route> */}
                     <Route path="/news/details" component={NewsDetailsPage}></Route>
                     <Route path="/goods" component={GoodsPage}></Route>
+                    <Route path="/login" component={LoginPage}></Route>
+                    <AuthRoute path="/user" component={UserPage}></AuthRoute>
                   </Suspense>
              </Switch>
              </React.Fragment>
